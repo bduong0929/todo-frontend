@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { FC, ReactNode } from "react";
+import Navbar from "./navbar";
 
 type Props = {
   children: ReactNode;
@@ -13,7 +14,9 @@ const Layout: FC<Props> = ({ children }) => {
         <title>Minimal Todo</title>
       </Head>
 
-      <header></header>
+      <header>
+        <Navbar />
+      </header>
 
       <main>{children}</main>
 
