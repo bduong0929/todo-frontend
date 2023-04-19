@@ -7,6 +7,7 @@ type Props = {
 };
 
 const Layout: FC<Props> = ({ children }) => {
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <Head>
@@ -20,7 +21,9 @@ const Layout: FC<Props> = ({ children }) => {
 
       <main>{children}</main>
 
-      <footer></footer>
+      <footer className="flex justify-center py-5">
+        <p>&copy; {currentYear} Minimal Todo. All rights reserved.</p>
+      </footer>
     </>
   );
 };
