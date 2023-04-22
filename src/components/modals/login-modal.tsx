@@ -1,15 +1,26 @@
-import { FC, FormEvent, useState } from "react";
+import { FC, FormEvent, useContext, useState } from "react";
 import { Button, TextField } from "@mui/material";
 import { useEffect, useRef } from "react";
+import TODO_API from "@/utils/axios-config";
+import { AuthContext } from "@/contexts/auth-provider";
+import { useRouter } from "next/router";
+import { errorToaster, successToaster } from "@/utils/toaster";
 
 interface LoginModalProps {
   setModal: (value: boolean) => void;
 }
 
+type LoginPayload = {
+  username: string;
+  password: string;
+};
+
 const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
   const modalRef = useRef<HTMLFormElement>(null);
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const { setAuth } = useContext(AuthContext);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -24,8 +35,26 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
     };
   }, [modalRef]);
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+  /* ---------------------------- FUNCTIONS ---------------------------- */
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
+    const payload: LoginPayload = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      const { data } = await TODO_API.post("/auth/login", payload);
+      setAuth(data);
+      setModal(false);
+      successToaster("Login success!");
+      router.push("/home");
+    } catch (e: any) {
+      console.log(e);
+      errorToaster(e.response.data.message);
+    }
   };
 
   return (
@@ -41,6 +70,8 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
           label="Username"
           type="text"
           variant="standard"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           InputProps={{
             sx: {
               color: "white",
@@ -69,6 +100,8 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
           label="Password"
           type="password"
           variant="standard"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           InputProps={{
             sx: {
               color: "white",
@@ -93,6 +126,7 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
           }}
         />
         <Button
+          type="submit"
           variant="contained"
           color="primary"
           className="bg-slate-700"

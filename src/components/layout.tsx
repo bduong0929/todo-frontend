@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { FC, ReactNode } from "react";
 import Navbar from "./navbar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
   children: ReactNode;
@@ -24,6 +26,7 @@ const Layout: FC<Props> = ({ children }) => {
       <footer className="flex justify-center py-5">
         <p>&copy; {currentYear} Minimal Todo. All rights reserved.</p>
       </footer>
+      <ToastContainer />
     </>
   );
 };

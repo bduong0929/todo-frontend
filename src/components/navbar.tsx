@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="flex justify-between px-10 py-5 shadow-xl font-mono bg-gradient-to-r from-cyan-900 to-slate-900 text-white">
+      <nav className="flex justify-between px-20 py-5 shadow-xl font-mono bg-gradient-to-r from-cyan-900 to-slate-900 text-white">
         <ul className="flex items-center gap-5">
           <Link href="/">
             <p className="text-4xl font-bold italic">TODO</p>
