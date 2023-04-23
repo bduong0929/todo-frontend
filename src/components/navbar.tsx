@@ -1,19 +1,24 @@
 import { Button } from "@mui/material";
 import {
+  ArrowLeftOnRectangleIcon,
   CogIcon,
   LockClosedIcon,
   TagIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import LoginModal from "./modals/login-modal";
 import { Transition } from "@headlessui/react";
+import { AuthContext } from "@/contexts/auth-provider";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const [loginModal, setLoginModal] = useState<boolean>(false);
   const [userDropdown, setUserDropdown] = useState<boolean>(false);
+  const { auth } = useContext(AuthContext);
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -38,6 +43,11 @@ const Navbar = () => {
 
   const handleUserDropdown = () => {
     setUserDropdown(!userDropdown);
+  };
+
+  const handleLogout = (): void => {
+    window.localStorage.removeItem("auth");
+    router.push("/");
   };
 
   return (
@@ -105,6 +115,13 @@ const Navbar = () => {
                 <CogIcon className="w-5 h-5" />
                 <p className="">Settings</p>
               </Link>
+              <div
+                className="flex items-center gap-3 pl-5 pr-16 cursor-pointer ease-out duration-300 hover:scale-110 hover:font-bold"
+                onClick={handleLogout}
+              >
+                <ArrowLeftOnRectangleIcon className="w-5 h-5" />
+                <p>Log out</p>
+              </div>
             </Transition>
           </div>
 

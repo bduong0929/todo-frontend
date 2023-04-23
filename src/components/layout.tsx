@@ -17,15 +17,18 @@ const Layout: FC<Props> = ({ children }) => {
         <title>Minimal Todo</title>
       </Head>
 
-      <header>
-        <Navbar />
-      </header>
+      <div className="flex flex-col min-h-screen">
+        <header>
+          <Navbar />
+        </header>
 
-      <main>{children}</main>
+        <main className="flex-grow">{children}</main>
 
-      <footer className="flex justify-center py-5">
-        <p>&copy; {currentYear} Minimal Todo. All rights reserved.</p>
-      </footer>
+        <footer className="flex justify-center py-10">
+          <p>&copy; {currentYear} Minimal Todo. All rights reserved.</p>
+        </footer>
+      </div>
+
       <ToastContainer />
     </>
   );
