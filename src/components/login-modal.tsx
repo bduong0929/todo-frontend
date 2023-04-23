@@ -51,7 +51,7 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
       window.localStorage.setItem("auth", JSON.stringify(data));
       setModal(false);
       successToaster("Login success!");
-      router.push("/home");
+      router.push("/dashboard");
     } catch (e: any) {
       console.log(e);
       errorToaster(e.response.data.message);

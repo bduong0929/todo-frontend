@@ -1,9 +1,11 @@
+// contexts/auth-provider.tsx
 import { Auth } from "@/models/auth";
 import { FC, ReactNode, createContext, useEffect, useState } from "react";
 
 type AuthContextType = {
   auth: Auth | null;
   setAuth: (auth: Auth | null) => void;
+  loading: boolean;
 };
 
 type AuthProviderType = {
@@ -13,21 +15,24 @@ type AuthProviderType = {
 export const AuthContext = createContext<AuthContextType>({
   auth: null,
   setAuth: () => {},
+  loading: true,
 });
 
 const AuthProvider: FC<AuthProviderType> = ({ children }) => {
   const [auth, setAuth] = useState<Auth | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const auth = localStorage.getItem("auth");
-    if (auth) {
-      setAuth(JSON.parse(auth));
+    const storedAuth = localStorage.getItem("auth");
+    if (storedAuth) {
+      setAuth(JSON.parse(storedAuth));
     }
+    setLoading(false);
   }, []);
 
   return (
     <>
-      <AuthContext.Provider value={{ auth, setAuth }}>
+      <AuthContext.Provider value={{ auth, setAuth, loading }}>
         {children}
       </AuthContext.Provider>
     </>

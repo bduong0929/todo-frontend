@@ -1,3 +1,5 @@
+import withAuth from "@/components/with-auth";
+import withoutAuth from "@/components/without-auth";
 import TODO_API from "@/utils/axios-config";
 import { errorToaster, successToaster } from "@/utils/toaster";
 import { Button, TextField } from "@mui/material";
@@ -10,7 +12,7 @@ type RegisterPayload = {
   password2: string;
 };
 
-export default function Home() {
+const Home = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -205,4 +207,6 @@ export default function Home() {
       </form>
     </>
   );
-}
+};
+
+export default withoutAuth(Home);

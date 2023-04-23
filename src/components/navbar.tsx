@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useState, useEffect, useRef, useContext } from "react";
-import LoginModal from "./modals/login-modal";
+import LoginModal from "./login-modal";
 import { Transition } from "@headlessui/react";
 import { AuthContext } from "@/contexts/auth-provider";
 import { useRouter } from "next/router";
@@ -17,7 +17,7 @@ const Navbar = () => {
   const userDropdownRef = useRef<HTMLDivElement>(null);
   const [loginModal, setLoginModal] = useState<boolean>(false);
   const [userDropdown, setUserDropdown] = useState<boolean>(false);
-  const { auth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -47,6 +47,7 @@ const Navbar = () => {
 
   const handleLogout = (): void => {
     window.localStorage.removeItem("auth");
+    setAuth(null);
     router.push("/");
   };
 
@@ -61,21 +62,23 @@ const Navbar = () => {
 
         <ul className="flex items-center gap-3">
           {/* Login */}
-          <Button
-            variant="contained"
-            color="primary"
-            className="bg-[#EDC951]"
-            style={{ textTransform: "none" }}
-            onClick={handleLoginModal}
-          >
-            Login
-          </Button>
+          {!auth && (
+            <Button
+              variant="contained"
+              color="primary"
+              className="bg-[#EDC951]"
+              style={{ textTransform: "none" }}
+              onClick={handleLoginModal}
+            >
+              Login
+            </Button>
+          )}
           <div
             ref={userDropdownRef}
             onClick={handleUserDropdown}
             className="flex flex-col items-end"
           >
-            <UserIcon className="h-7 w-7 cursor-pointer" />
+            {auth && <UserIcon className="h-7 w-7 cursor-pointer" />}
 
             <Transition
               show={userDropdown}
