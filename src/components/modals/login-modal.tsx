@@ -48,6 +48,7 @@ const LoginModal: FC<LoginModalProps> = ({ setModal }) => {
     try {
       const { data } = await TODO_API.post("/auth/login", payload);
       setAuth(data);
+      window.localStorage.setItem("auth", JSON.stringify(data));
       setModal(false);
       successToaster("Login success!");
       router.push("/home");
