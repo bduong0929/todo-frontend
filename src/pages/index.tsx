@@ -19,6 +19,11 @@ export default function Home() {
   const [validConfirmPassword, setValidConfirmPassword] =
     useState<boolean>(true);
 
+  /**
+   * Handle registering a new user
+   * @param e - Form event
+   * @returns - Promise<void>
+   */
   const handleRegister = async (
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -59,23 +64,45 @@ export default function Home() {
     try {
       await TODO_API.post("/auth/register", payload);
       successToaster("Register success!");
-      setUsername("");
-      setPassword("");
-      setConfirmPassword("");
+      resetForm();
     } catch (e: any) {
       errorToaster(e.response.data.message);
       setValidUsername(false);
     }
   };
 
+  /**
+   * Validate username
+   *
+   * @param username - username to validate
+   * @returns boolean - true if valid, false otherwise
+   */
   const isValidUsername = (username: string): boolean => {
     return /^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/.test(username);
   };
 
+  /**
+   * Validate password
+   *
+   * @param password - password to validate
+   * @returns boolean - true if valid, false otherwise
+   */
   const isValidPassword = (password: string): boolean => {
     return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
       password
     );
+  };
+
+  /**
+   * Reset form
+   */
+  const resetForm = (): void => {
+    setUsername("");
+    setPassword("");
+    setConfirmPassword("");
+    setValidUsername(true);
+    setValidPassword(true);
+    setValidConfirmPassword(true);
   };
 
   return (
